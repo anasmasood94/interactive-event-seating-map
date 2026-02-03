@@ -120,37 +120,6 @@ pnpm build
 pnpm preview
 ```
 
-## Project Structure
-
-```
-/Assessment
-├── public/
-│   └── venue.json          # Venue data
-├── src/
-│   ├── components/
-│   │   ├── SeatMap/        # Main map component
-│   │   ├── SeatDetailsPanel/  # Seat information panel
-│   │   ├── SelectionSummary/  # Selection summary
-│   │   └── Layout/         # Layout wrapper
-│   ├── context/
-│   │   └── SeatSelectionContext.tsx  # State management
-│   ├── hooks/
-│   │   ├── useVenueData.ts      # Data fetching
-│   │   └── useKeyboardNavigation.ts  # Keyboard handling
-│   ├── types/
-│   │   └── venue.ts        # TypeScript types
-│   ├── utils/
-│   │   ├── localStorage.ts     # Persistence
-│   │   └── priceCalculation.ts  # Price logic
-│   ├── styles/
-│   │   └── globals.css     # Global styles
-│   ├── App.tsx
-│   └── main.tsx
-├── package.json
-├── tsconfig.json
-└── vite.config.ts
-```
-
 ## Trade-offs & Decisions
 
 ### SVG vs Canvas
