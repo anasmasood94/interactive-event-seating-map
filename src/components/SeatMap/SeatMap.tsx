@@ -10,16 +10,11 @@ export default function SeatMap() {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewport = useViewport(containerRef);
 
-  if (!venueData) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <p>Loading venue data...</p>
-      </div>
-    );
-  }
-
   // Flatten all seats with their section/row info for viewport culling
+  // Must be called before any early returns (Rules of Hooks)
   const allSeatsWithContext = useMemo(() => {
+    if (!venueData) return [];
+
     const seats: Array<{
       seat: SeatType;
       sectionId: string;
@@ -42,7 +37,10 @@ export default function SeatMap() {
   }, [venueData]);
 
   // Get visible seats based on viewport (with performance optimization for large datasets)
+  // Must be called before any early returns (Rules of Hooks)
   const visibleSeats = useMemo(() => {
+    if (!venueData || allSeatsWithContext.length === 0) return [];
+
     // Only apply viewport culling if we have a significant number of seats (> 1000)
     // For smaller venues, rendering all seats is fine
     if (allSeatsWithContext.length < 1000) {
@@ -72,7 +70,16 @@ export default function SeatMap() {
     return allSeatsWithContext.filter((item) =>
       visible.some((v) => v.id === item.seat.id)
     );
-  }, [allSeatsWithContext, viewport, venueData.map.width, venueData.map.height]);
+  }, [allSeatsWithContext, viewport, venueData]);
+
+  // Early return AFTER all hooks
+  if (!venueData) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <p>Loading venue data...</p>
+      </div>
+    );
+  }
 
   return (
     <div ref={containerRef} className="w-full h-full overflow-auto bg-gray-50">
